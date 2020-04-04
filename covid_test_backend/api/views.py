@@ -18,6 +18,7 @@ def check(request):
 
     # TODO gather from database
 
+
     if random.random() < 0.5:
         return HttpResponseNotFound()
 
