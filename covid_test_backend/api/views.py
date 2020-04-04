@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import json
+
 import bcrypt as bcrypt
 from django.http import JsonResponse, HttpResponse
 
@@ -40,24 +42,27 @@ def __generate_hash():
 def add_results(request):
     # flow: rozdel input na riadky, kazdy riadok na jednotlive kusy dat, s nimi vyrob instanciu TestResult, uloz do DB.
 
-    # POZOR: date format musi byt YYYY-MM-DD
-    # first mock's id_number is 19700101
-    mock = """2020-01-01;$2b$12$CpUahV7dM5pxgbC1siyojOqIbwbYSB1C83vh1BHplpbB.1HVrSVJq;0
-2020-01-01;$1$wwwwwww=$;0
-2020-01-01;$1$eeeeee=$;0
-2020-01-01;$rrrrr=$;0
-2020-01-01;$1$nJuP$LkmznbaSd!3;1"""
+    # [
+    #     {
+    #         "date": "2020-03-18",
+    #         "salt": "$2a$10$zs8NOs0TXTk9nQjyOm0etO",
+    #         "result": "0"
+    #     },
+    #     {
+    #         ...
+    #     }
+    # ]
 
-    # lines = request.POST.get('test_results').split('\n')
-    lines = mock.split('\n')
+    #data = json.loads(request.read())
+    # first hash is for 990225/6089
+    data = json.loads('[{"date": "2020-03-18","hash": "$2a$10$zs8NOs0TXTk9nQjyOm0etOwC/TIVMpSOCOSPtiibJHZ4BVWLBlw52","result": 0}]')
 
-    for line in lines:
-        fields = line.split(';')
+    for row in data:
         new_test_result = TestResult(
-            executed_at=fields[0],
-            hash_patient=fields[1],
-            result=fields[2]
+            executed_at=row.get('date'),
+            hash_patient=row.get('hash'),
+            result=row.get('result')
         )
         new_test_result.save()
 
-    return HttpResponse(f'pridali sme {len(lines)} výsledkov testov')
+    return HttpResponse(f'pridali sme {len(data)} výsledkov testov')
