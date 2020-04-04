@@ -3,9 +3,10 @@ from __future__ import unicode_literals
 
 import random
 
-from django.http import JsonResponse, HttpResponseNotFound, HttpResponse
+from django.http import JsonResponse, HttpResponse
 
 from .models import TestResult
+
 
 def check(request):
     assert request.method == 'POST'
@@ -19,13 +20,9 @@ def check(request):
 
     # TODO gather from database
 
-    if random.random() < 0.5:
-        return HttpResponseNotFound()
-
     return JsonResponse({
-        'test_result': random.random() < 0.5
+        'test_result': random.choice(['notfound', 'positive', 'negative'])
     })
-
 
 
 def add_results(request):
