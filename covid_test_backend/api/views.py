@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-import uuid
-
 import bcrypt as bcrypt
 from django.http import JsonResponse, HttpResponse
 
@@ -32,20 +30,23 @@ def check(request):
 
 def __generate_hash():
     pass
-    # sent_data = id_number + '1f26529f-8d90-40b2-82fc-a81536c905e3'
-    # hashed = bcrypt.hashpw(sent_data.encode('utf-8'), bcrypt.gensalt())
-    # print(hashed)
+    # sent_data = id_number
+    # salt = bcrypt.gensalt()
+    # hashed = bcrypt.hashpw(sent_data.encode('utf-8'), salt)
+    # print(salt, hashed)
+    # return HttpResponse(f'{salt} ... {hashed}')
 
 
 def add_results(request):
     # flow: rozdel input na riadky, kazdy riadok na jednotlive kusy dat, s nimi vyrob instanciu TestResult, uloz do DB.
 
     # POZOR: date format musi byt YYYY-MM-DD
-    mock = """2020-01-01;1f26529f-8d90-40b2-82fc-a81536c905e3;$2b$12$NrJSTrRGkfhNo5LSiRZtaud5arsaOnEWQoHXYg48PLKl23a8tBsS6;0
-2020-01-01;1f26529f-8d90-40b2-82fc-a81536c905e3;$1$wwwwwww=$;0
-2020-01-01;1f26529f-8d90-40b2-82fc-a81536c905e3;$1$eeeeee=$;0
-2020-01-01;1f26529f-8d90-40b2-82fc-a81536c905e3;$rrrrr=$;0
-2020-01-01;1f26529f-8d90-40b2-82fc-a81536c905e3;$1$nJuP$LkmznbaSd!3;1"""
+    # first mock's id_number is 19700101
+    mock = """2020-01-01;$2b$12$CpUahV7dM5pxgbC1siyojOqIbwbYSB1C83vh1BHplpbB.1HVrSVJq;0
+2020-01-01;$1$wwwwwww=$;0
+2020-01-01;$1$eeeeee=$;0
+2020-01-01;$rrrrr=$;0
+2020-01-01;$1$nJuP$LkmznbaSd!3;1"""
 
     # lines = request.POST.get('test_results').split('\n')
     lines = mock.split('\n')
@@ -54,9 +55,8 @@ def add_results(request):
         fields = line.split(';')
         new_test_result = TestResult(
             executed_at=fields[0],
-            salt=fields[1],
-            hash_patient=fields[2],
-            result=fields[3]
+            hash_patient=fields[1],
+            result=fields[2]
         )
         new_test_result.save()
 
