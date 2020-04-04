@@ -92,8 +92,12 @@ const Data = () => {
                   enableReinitialize={true}
                   onSubmit={async (values: DataUpload) => {
                     // const { test_result } = await checkResults(values);
-                    setDataUploaded(true);
-                    saveData(values.data);
+                    try {
+                      await saveData(values.data);
+                      setDataUploaded(true);
+                    } catch (error) {
+                      console.error(error);
+                    }
                   }}
                 >
                   {(formikProps) => (

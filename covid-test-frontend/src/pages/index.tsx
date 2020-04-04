@@ -21,7 +21,7 @@ setDefaultLocale("sk");
 export interface Patient {
   birthNumber: string;
   testDate: Date;
-  gdpr: boolean;
+  // gdpr: boolean;
 }
 
 const Home = () => {
@@ -49,7 +49,7 @@ const Home = () => {
               initialValues={{
                 birthNumber: "",
                 testDate: new Date(),
-                gdpr: false,
+                // gdpr: false,
               }}
               onSubmit={async (values: Patient) => {
                 const { test_result } = await checkResults(values);
@@ -88,12 +88,12 @@ const Home = () => {
                       placeholderText="Weeks start on Monday"
                     />
                   </Form.Group>
-                  <Form.Group controlId="formBasicCheckbox">
+                  {/* <Form.Group controlId="formBasicCheckbox">
                     <Form.Check
                       type="checkbox"
                       label="Suhlasim so spracovanim osobnych udajov"
                     />
-                  </Form.Group>
+                  </Form.Group> */}
                   <Button variant="primary" type="submit">
                     Odoslat
                   </Button>

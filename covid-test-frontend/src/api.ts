@@ -38,5 +38,8 @@ export const saveData = async (data: string) => {
     };
   });
 
-  return hashedData;
+  return (await fetch("https://gajdy.pythonanywhere.com/api/add_results", {
+    method: "POST",
+    body: JSON.stringify(hashedData),
+  })).json();
 };
