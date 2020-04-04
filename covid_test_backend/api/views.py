@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 
 import random
 
-from django.http import JsonResponse, HttpResponseNotFound
+from django.http import JsonResponse, HttpResponse
 
 from .models import TestResult
 
@@ -20,6 +20,35 @@ def check(request):
 
     test_result = TestResult.check_test_result(executed_at, id_number)
 
-    return JsonResponse({
-        'test_result': test_result
+    response = JsonResponse({
+        'test_result': 'negative' if test_result else 'notfound'
     })
+
+    response['Access-Control-Allow-Origin'] = '*'
+
+    return response
+
+
+def add_results(request):
+    # flow: rozdel input na riadky, kazdy riadok na jednotlive kusy dat, s nimi vyrob instanciu TestResult, uloz do DB.
+
+    # POZOR: date format musi byt YYYY-MM-DD
+    mock = """2020-01-01;$1$qqqqqq=$;0
+2020-01-01;$1$wwwwwww=$;0
+2020-01-01;$1$eeeeee=$;0
+2020-01-01;$rrrrr=$;0
+2020-01-01;$1$nJuP$LkmznbaSd!3;1"""
+
+    # lines = request.POST.get('test_results').split('\n')
+    lines = mock.split('\n')
+
+    for line in lines:
+        fields = line.split(';')
+        new_test_result = TestResult(
+            executed_at=fields[0],
+            hash_patient=fields[1],
+            result=fields[2]
+        )
+        new_test_result.save()
+
+    return HttpResponse(f'pridali sme {len(lines)} výsledkov testov')
