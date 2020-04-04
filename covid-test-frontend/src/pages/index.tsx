@@ -12,9 +12,14 @@ import { Formik, Field, FormikHelpers } from "formik";
 import { checkResults } from "../api";
 import { useState } from "react";
 
+import DatePicker, { registerLocale, setDefaultLocale } from "react-datepicker";
+import sk from "date-fns/locale/sk";
+registerLocale("sk", sk);
+setDefaultLocale("sk");
+
 export interface Patient {
   birthNumber: string;
-  testDate: string;
+  testDate: Date;
   gdpr: boolean;
 }
 
@@ -42,7 +47,7 @@ const Home = () => {
             <Formik<Patient>
               initialValues={{
                 birthNumber: "",
-                testDate: "",
+                testDate: new Date(),
                 gdpr: false,
               }}
               onSubmit={async (values: Patient) => {
@@ -71,13 +76,15 @@ const Home = () => {
                   </Form.Group>
                   <Form.Group controlId="birthNumber">
                     <Form.Label>Datum testovania</Form.Label>
-                    <Form.Control
-                      name="testDate"
-                      type="date"
-                      placeholder="Datum kedy vas testovali"
-                      onChange={formikProps.handleChange}
-                      onBlur={formikProps.handleBlur}
-                      value={formikProps.values.testDate}
+                    <DatePicker
+                      wrapperClassName="d-block"
+                      className="form-control"
+                      selected={formikProps.values.testDate}
+                      onChange={(date) =>
+                        formikProps.setFieldValue("testDate", date)
+                      }
+                      locale="sk"
+                      placeholderText="Weeks start on Monday"
                     />
                   </Form.Group>
                   <Form.Group controlId="formBasicCheckbox">
