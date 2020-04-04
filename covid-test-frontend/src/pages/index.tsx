@@ -34,7 +34,7 @@ const Home = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Container>
-        <Row className="mb-3">
+        <Row className="mb-3 mt-3">
           <Col md={{ span: 6, offset: 3 }}>
             <h1>Covid test result app </h1>
             <p>
