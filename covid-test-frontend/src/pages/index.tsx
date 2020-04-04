@@ -9,7 +9,7 @@ import Button from "react-bootstrap/Button";
 import Alert from "react-bootstrap/Alert";
 
 import { Formik, Field, FormikHelpers } from "formik";
-import { checkResults } from "../api";
+import { checkResults, TestResult } from "../api";
 import { useState } from "react";
 
 import DatePicker, { registerLocale, setDefaultLocale } from "react-datepicker";
@@ -24,7 +24,7 @@ export interface Patient {
 }
 
 const Home = () => {
-  const [isPositive, setisPositive] = useState(null);
+  const [isPositive, setIsPositive] = useState<TestResult | null>(null);
 
   return (
     <div className="container">
@@ -51,8 +51,8 @@ const Home = () => {
                 gdpr: false,
               }}
               onSubmit={async (values: Patient) => {
-                const { positive } = await checkResults(values);
-                setisPositive(positive);
+                const { test_result } = await checkResults(values);
+                setIsPositive(test_result);
               }}
             >
               {(formikProps) => (
@@ -114,6 +114,15 @@ const Home = () => {
               <>
                 <Alert variant="success">Vas vysledok bol negativny</Alert>
                 <p>Dalsie instrukcie</p>
+              </>
+            )}
+            {isPositive === "not_found" && (
+              <>
+                <Alert variant="info">Vas vysledok nebol najdeny</Alert>
+                <p>
+                  Bud este nebol spracovany alebo ste zadali nespravne udaje ...
+                  dalsie instrukcie
+                </p>
               </>
             )}
           </Col>
