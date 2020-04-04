@@ -12,8 +12,8 @@ from .models import TestResult
 def check(request):
     assert request.method == 'POST'
 
-    executed_at = request.GET.get('executed_at')
-    id_number = request.GET.get('id_number')
+    executed_at = request.POST.get('executed_at')
+    id_number = request.POST.get('id_number')
 
     # TODO validate these
     assert executed_at
