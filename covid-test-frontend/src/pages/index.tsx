@@ -51,6 +51,7 @@ const Home = () => {
                 testDate: new Date(),
                 // gdpr: false,
               }}
+              validate={validate}
               onSubmit={async (values: Patient) => {
                 const { test_result } = await checkResults(values);
                 setTestResult(test_result);
@@ -66,13 +67,22 @@ const Home = () => {
                     <Form.Control
                       name="birthNumber"
                       type="text"
-                      placeholder="Rodne cislo vo formate 1234567889"
+                      placeholder="Rodne cislo vo formate 1234567890"
                       onChange={formikProps.handleChange}
                       onBlur={formikProps.handleBlur}
                       value={formikProps.values.birthNumber}
+                      isInvalid={
+                        formikProps.touched.birthNumber &&
+                        !!formikProps.errors.birthNumber
+                      }
                     />
+
+                    <Form.Control.Feedback type="invalid">
+                      {formikProps.errors.birthNumber}
+                    </Form.Control.Feedback>
+
                     <Form.Text className="text-muted">
-                      We'll never share your email with anyone else.
+                      Vase rodne cislo je bezpecne zasifrovane
                     </Form.Text>
                   </Form.Group>
                   <Form.Group controlId="birthNumber">
@@ -88,12 +98,6 @@ const Home = () => {
                       placeholderText="Weeks start on Monday"
                     />
                   </Form.Group>
-                  {/* <Form.Group controlId="formBasicCheckbox">
-                    <Form.Check
-                      type="checkbox"
-                      label="Suhlasim so spracovanim osobnych udajov"
-                    />
-                  </Form.Group> */}
                   <Button variant="primary" type="submit">
                     Odoslat
                   </Button>
@@ -130,14 +134,15 @@ const Home = () => {
 //     .replace(/\D/g, "")
 //     .replace(/^(\d{6})(\d{4})$/, withSlash ? "$1 / $2" : "$1$2");
 
-export const validate = (values: Patient) => {
+const validate = (values: Patient) => {
   const errors: Partial<FormikErrors<Patient>> = {};
 
   if (!values.birthNumber) {
     errors.birthNumber = "Zadajte rodné číslo";
-  } else if (!rodnecislo(values.birthNumber).isValid()) {
-    errors.birthNumber = "Zadajte platne rodné číslo (bez medzier)";
   }
+  // } else if (!rodnecislo(values.birthNumber).isValid()) {
+  //   errors.birthNumber = "Zadajte platne rodné číslo (bez medzier)";
+  // }
 
   return errors;
 };
