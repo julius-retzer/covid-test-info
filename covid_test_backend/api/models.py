@@ -8,22 +8,19 @@ from django.db import models
 
 class TestResult(models.Model):
     executed_at = models.DateField('day month and year the test was executed')
+    salt = models.CharField(max_length=16)
     hash_patient = models.CharField(max_length=60)
-    # todo add pepper
     result = models.BooleanField()
 
-    def check_test_result(self, executed_at, id_number):
-        tests = self.objects.filter(executed_at=executed_at)
+    @staticmethod
+    def check_test_result(executed_at, id_number):
+        tests = TestResult.objects.filter(executed_at=executed_at)
 
         for db_test in tests:
-            db_pepper = None
-            xx_hash = bcrypt
+            sent_data = id_number + db_test.salt
             db_hash = db_test.hash_patient
 
-            if bcrypt.checkpw(password, hashed):
-                xx
+            if bcrypt.checkpw(sent_data, db_hash):
+                return True
 
-
-
-        return None
-
+        return False

@@ -5,23 +5,21 @@ import random
 
 from django.http import JsonResponse, HttpResponseNotFound
 
+from .models import TestResult
+
 
 def check(request):
-    assert request.method == 'POST'
+    #assert request.method == 'POST'
 
-    executed_at = request.POST.get('executed_at')
-    id_number = request.POST.get('id_number')
+    executed_at = request.GET.get('executed_at')
+    id_number = request.GET.get('id_number')
 
     # TODO validate these
     assert executed_at
     assert id_number
 
-    # TODO gather from database
-
-
-    if random.random() < 0.5:
-        return HttpResponseNotFound()
+    test_result = TestResult.check_test_result(executed_at, id_number)
 
     return JsonResponse({
-        'test_result': random.random() < 0.5
+        'test_result': test_result
     })
