@@ -8,9 +8,10 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Alert from "react-bootstrap/Alert";
 
-import { Formik, Field, FormikHelpers } from "formik";
+import { Formik, Field, FormikHelpers, FormikErrors } from "formik";
 import { checkResults, TestResult } from "../api";
 import { useState } from "react";
+import { rodnecislo } from "rodnecislo";
 
 import DatePicker, { registerLocale, setDefaultLocale } from "react-datepicker";
 import sk from "date-fns/locale/sk";
@@ -103,20 +104,20 @@ const Home = () => {
         </Row>
         <Row className="mb-3">
           <Col md={{ span: 6, offset: 3 }}>
-            {isPositive === true && (
+            {isPositive === "positive" && (
               <>
                 <Alert variant="danger">Vas vysledok bol pozitivny</Alert>
 
                 <p>Dalsie instrukcie</p>
               </>
             )}
-            {isPositive === false && (
+            {isPositive === "negative" && (
               <>
                 <Alert variant="success">Vas vysledok bol negativny</Alert>
                 <p>Dalsie instrukcie</p>
               </>
             )}
-            {isPositive === "not_found" && (
+            {isPositive === "notfound" && (
               <>
                 <Alert variant="info">Vas vysledok nebol najdeny</Alert>
                 <p>
@@ -132,6 +133,23 @@ const Home = () => {
       <style jsx>{``}</style>
     </div>
   );
+};
+
+// export const formatRodneCislo = (value: string, withSlash = true) =>
+//   value
+//     .replace(/\D/g, "")
+//     .replace(/^(\d{6})(\d{4})$/, withSlash ? "$1 / $2" : "$1$2");
+
+export const validate = (values: Patient) => {
+  const errors: Partial<FormikErrors<Patient>> = {};
+
+  if (!values.birthNumber) {
+    errors.birthNumber = "Zadajte rodné číslo";
+  } else if (!rodnecislo(values.birthNumber).isValid()) {
+    errors.birthNumber = "Zadajte platne rodné číslo (bez medzier)";
+  }
+
+  return errors;
 };
 
 export default Home;
