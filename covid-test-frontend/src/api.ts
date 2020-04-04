@@ -22,10 +22,10 @@ export const checkResults = async (patient: Patient): Promise<CheckResult> => {
 };
 
 export const saveData = async (data: string) => {
-  const hashedData = data.split(/\r?\n/).map((line) => {
+  const hashedData = await Promise.all(data.split(/\r?\n/).map(async (line) => {
     const [date, rodneCislo, result] = line.split(";");
-    const salt = bcrypt.genSaltSync(10);
-    const hash = bcrypt.hashSync(rodneCislo, salt);
+    const salt = await bcrypt.genSalt(10);
+    const hash = await bcrypt.hash(rodneCislo, salt);
 
     const year = date.slice(0, 4);
     const month = date.slice(4, 6);
@@ -36,10 +36,12 @@ export const saveData = async (data: string) => {
       hash,
       result: result === "1" ? true : false,
     };
-  });
+  }));
 
-  return (await fetch("https://gajdy.pythonanywhere.com/api/add_results", {
-    method: "POST",
-    body: JSON.stringify(hashedData),
-  })).json();
+  return (
+    await fetch("https://gajdy.pythonanywhere.com/api/add_results", {
+      method: "POST",
+      body: JSON.stringify(hashedData),
+    })
+  ).json();
 };

@@ -7,6 +7,7 @@ import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Alert from "react-bootstrap/Alert";
+import Spinner from "react-bootstrap/Spinner";
 
 import { Formik, Field, FormikHelpers, FormikErrors } from "formik";
 import { useState } from "react";
@@ -24,6 +25,7 @@ export interface DataUpload {
 const Data = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [dataUploaded, setDataUploaded] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   return (
     <div className="container">
@@ -92,11 +94,14 @@ const Data = () => {
                   enableReinitialize={true}
                   onSubmit={async (values: DataUpload) => {
                     // const { test_result } = await checkResults(values);
+                    setIsProcessing(true);
                     try {
                       await saveData(values.data);
                       setDataUploaded(true);
+                      setIsProcessing(false);
                     } catch (error) {
                       console.error(error);
+                      setIsProcessing(false);
                     }
                   }}
                 >
@@ -120,7 +125,20 @@ const Data = () => {
                       </Form.Group>
 
                       <Button variant="primary" type="submit">
-                        Poslat
+                        {isProcessing ? (
+                          <>
+                            <Spinner
+                              as="span"
+                              animation="border"
+                              size="sm"
+                              role="status"
+                              aria-hidden="true"
+                            />
+                            <span className="sr-only">Loading...</span>
+                          </>
+                        ) : (
+                          "Odoslat"
+                        )}
                       </Button>
                     </Form>
                   )}
