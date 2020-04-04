@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.db import models
+import bcrypt
 
 from django.db import models
 
@@ -11,3 +11,17 @@ class TestResult(models.Model):
     hash_patient = models.CharField(max_length=60)
     result = models.BooleanField()
 
+    @staticmethod
+    def check_test_result(executed_at, id_number):
+        tests = TestResult.objects.filter(executed_at=executed_at)
+
+        for db_test in tests:
+            db_hash = db_test.hash_patient
+
+            try:
+                if bcrypt.checkpw(id_number.encode('utf8'), db_hash.encode('utf8')):
+                    return True
+            except Exception:
+                continue
+
+        return False
