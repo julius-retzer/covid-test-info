@@ -30,7 +30,7 @@ class TestResult(models.Model):
 class ResultRequest(models.Model):
     patient_id = models.CharField(max_length=15)
     executed_at = models.DateField('day month and year the test was executed')
-    email = models.EmailField(max_length=100)
+    email = models.EmailField(max_length=255)
 
     def __str__(self):
         return f'R.č. {self.patient_id} z {self.executed_at}, {self.email}'
