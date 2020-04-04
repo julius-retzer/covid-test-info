@@ -139,9 +139,10 @@ const validate = (values: Patient) => {
 
   if (!values.birthNumber) {
     errors.birthNumber = "Zadajte rodné číslo";
-  } else if (!rodnecislo(values.birthNumber).isValid()) {
-    errors.birthNumber = "Zadajte platne rodné číslo (bez medzier)";
   }
+  // } else if (!rodnecislo(values.birthNumber).isValid()) {
+  //   errors.birthNumber = "Zadajte platne rodné číslo (bez medzier)";
+  // }
 
   return errors;
 };
