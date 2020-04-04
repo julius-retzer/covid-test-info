@@ -20,9 +20,13 @@ def check(request):
 
     # TODO gather from database
 
-    return JsonResponse({
+    response = JsonResponse({
         'test_result': random.choice(['notfound', 'positive', 'negative'])
     })
+
+    response['Access-Control-Allow-Origin'] = '*'
+
+    return response
 
 
 def add_results(request):
