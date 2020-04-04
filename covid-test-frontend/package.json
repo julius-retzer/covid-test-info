@@ -8,7 +8,9 @@
     "start": "next start"
   },
   "dependencies": {
+    "@types/bcryptjs": "2.4.2",
     "@types/react-datepicker": "2.11.0",
+    "bcryptjs": "2.4.3",
     "bootstrap": "4.4.1",
     "formik": "2.1.4",
     "next": "9.3.4",
