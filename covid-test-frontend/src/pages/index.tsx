@@ -25,7 +25,7 @@ export interface Patient {
 }
 
 const Home = () => {
-  const [isPositive, setIsPositive] = useState<TestResult | null>(null);
+  const [testResult, setTestResult] = useState<TestResult | null>(null);
 
   return (
     <div className="container">
@@ -53,7 +53,7 @@ const Home = () => {
               }}
               onSubmit={async (values: Patient) => {
                 const { test_result } = await checkResults(values);
-                setIsPositive(test_result);
+                setTestResult(test_result);
               }}
             >
               {(formikProps) => (
@@ -104,26 +104,16 @@ const Home = () => {
         </Row>
         <Row className="mb-3">
           <Col md={{ span: 6, offset: 3 }}>
-            {isPositive === "positive" && (
-              <>
-                <Alert variant="danger">Vas vysledok bol pozitivny</Alert>
-
-                <p>Dalsie instrukcie</p>
-              </>
-            )}
-            {isPositive === "negative" && (
+            {testResult === "negative" && (
               <>
                 <Alert variant="success">Vas vysledok bol negativny</Alert>
                 <p>Dalsie instrukcie</p>
               </>
             )}
-            {isPositive === "notfound" && (
+            {testResult === "notfound" && (
               <>
                 <Alert variant="info">Vas vysledok nebol najdeny</Alert>
-                <p>
-                  Bud este nebol spracovany alebo ste zadali nespravne udaje ...
-                  dalsie instrukcie
-                </p>
+                <p>Vase udaje neboli najdene medzi negativnymi záznamami</p>
               </>
             )}
           </Col>

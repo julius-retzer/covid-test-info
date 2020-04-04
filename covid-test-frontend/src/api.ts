@@ -3,7 +3,7 @@ import { format } from "date-fns";
 
 const apiUrl = "https://gajdy.pythonanywhere.com/api/check";
 
-export type TestResult = 'positive' | 'negative' | "notfound";
+export type TestResult = 'negative' | "notfound";
 interface CheckResult {
   test_result: TestResult;
 }
