@@ -8,7 +8,7 @@ from django.db import models
 
 class TestResult(models.Model):
     executed_at = models.DateField('day month and year the test was executed')
-    salt = models.CharField(max_length=16)
+    salt = models.CharField(max_length=36)
     hash_patient = models.CharField(max_length=60)
     result = models.BooleanField()
 
@@ -20,7 +20,10 @@ class TestResult(models.Model):
             sent_data = id_number + db_test.salt
             db_hash = db_test.hash_patient
 
-            if bcrypt.checkpw(sent_data, db_hash):
-                return True
+            try:
+                if bcrypt.checkpw(sent_data.encode('utf8'), db_hash.encode('utf8')):
+                    return True
+            except Exception:
+                continue
 
         return False
