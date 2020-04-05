@@ -22,26 +22,26 @@ export const checkResults = async (patient: Patient): Promise<CheckResult> => {
 };
 
 export const saveData = async (data: string) => {
-  const hashedData = await Promise.all(data.split(/\r?\n/).map(async (line) => {
-    const [date, rodneCislo, result] = line.split(";");
-    const salt = await bcrypt.genSalt(10);
-    const hash = await bcrypt.hash(rodneCislo, salt);
+  const hashedData = await Promise.all(
+    data.split(/\r?\n/).map(async (line) => {
+      const [date, rodneCislo, result] = line.split(";");
+      const salt = await bcrypt.genSalt(10);
+      const hash = await bcrypt.hash(rodneCislo, salt);
 
-    const year = date.slice(0, 4);
-    const month = date.slice(4, 6);
-    const day = date.slice(6, 8);
+      const year = date.slice(0, 4);
+      const month = date.slice(4, 6);
+      const day = date.slice(6, 8);
 
-    return {
-      date: `${year}-${month}-${day}`,
-      hash,
-      result: result === "1" ? true : false,
-    };
-  }));
-
-  return (
-    await fetch("https://gajdy.pythonanywhere.com/api/add_results", {
-      method: "POST",
-      body: JSON.stringify(hashedData),
+      return {
+        date: `${year}-${month}-${day}`,
+        hash,
+        result: result === "1" ? true : false,
+      };
     })
-  ).json();
+  );
+
+  return await fetch("https://gajdy.pythonanywhere.com/api/add_results", {
+    method: "POST",
+    body: JSON.stringify(hashedData),
+  });
 };

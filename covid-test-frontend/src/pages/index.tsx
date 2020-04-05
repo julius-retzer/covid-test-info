@@ -30,16 +30,15 @@ const Home = () => {
   return (
     <div className="container">
       <Head>
-        <title>Create Next App</title>
+        <title>Covid negative test management</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Container>
         <Row className="mb-3 mt-3">
           <Col md={{ span: 6, offset: 3 }}>
-            <h1>Covid test result app </h1>
-            <p>
-              Ak si chcete overit vysledky svojho testu, vyplnte formular a
-              budeme vas informovat
+            <h1>Overenie negatívneho výsledku testu na Covid-19</h1>
+            <p className="mt-3">
+              Pre overenie negatívneho výsledku vyplňte následovný formulár. 
             </p>
           </Col>
         </Row>
@@ -49,7 +48,6 @@ const Home = () => {
               initialValues={{
                 birthNumber: "",
                 testDate: new Date(),
-                // gdpr: false,
               }}
               validate={validate}
               onSubmit={async (values: Patient) => {
@@ -63,7 +61,7 @@ const Home = () => {
                   onSubmit={formikProps.handleSubmit}
                 >
                   <Form.Group controlId="birthNumber">
-                    <Form.Label>Rodne cislo</Form.Label>
+                    <Form.Label>Rodné číslo</Form.Label>
                     <Form.Control
                       name="birthNumber"
                       type="text"
@@ -82,11 +80,11 @@ const Home = () => {
                     </Form.Control.Feedback>
 
                     <Form.Text className="text-muted">
-                      Vase rodne cislo je bezpecne zasifrovane
+                      Vaše rodné číslo je bezpečne zašifrované
                     </Form.Text>
                   </Form.Group>
                   <Form.Group controlId="birthNumber">
-                    <Form.Label>Datum testovania</Form.Label>
+                    <Form.Label>Dátum testovania</Form.Label>
                     <DatePicker
                       wrapperClassName="d-block"
                       className="form-control"
@@ -99,7 +97,7 @@ const Home = () => {
                     />
                   </Form.Group>
                   <Button variant="primary" type="submit">
-                    Odoslat
+                    Odoslať
                   </Button>
                 </Form>
               )}
@@ -110,14 +108,31 @@ const Home = () => {
           <Col md={{ span: 6, offset: 3 }}>
             {testResult === "negative" && (
               <>
-                <Alert variant="success">Vas vysledok bol negativny</Alert>
-                <p>Dalsie instrukcie</p>
+                <Alert variant="success">
+                  Overili sme vašu vzorku a je negatívna
+                </Alert>
+                <p>
+                  Naďalej prosím dodržiavajte správne hygienické zásady
+                  (umývanie rúk, nedotýkať sa tváre, nestretávať sa s ľuďmi,
+                  pokiaľ to nie je nevyhnutné)
+                </p>
               </>
             )}
             {testResult === "notfound" && (
               <>
-                <Alert variant="info">Vas vysledok nebol najdeny</Alert>
-                <p>Vase udaje neboli najdene medzi negativnymi záznamami</p>
+                <Alert variant="info">Vašu vzorku sme nedokázali overiť </Alert>
+                <p>To môže znamenať jednu z nasledujúcich možnosti</p>
+                <ul>
+                  <li>
+                    Vaša vzorka ešte nebola spracovaná. Nechajte nám na seba
+                    kontakt a budeme vás informovať, ak vzorka bude negatívna
+                  </li>
+                  <li>
+                    Vaša vzorka bola pozitívna. Čakajte prosím na telefonát z
+                    príslušného úradu, ktorý vás bude informovať o ďalšom
+                    postupe
+                  </li>
+                </ul>
               </>
             )}
           </Col>

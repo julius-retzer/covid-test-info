@@ -30,7 +30,7 @@ const Data = () => {
   return (
     <div className="container">
       <Head>
-        <title>Create Next App</title>
+        <title>Covid negative test management</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Container>
@@ -51,7 +51,7 @@ const Data = () => {
                 >
                   {(formikProps) => (
                     <>
-                      <h1>Covid test result app </h1>
+                      <h1>Covid negative test management</h1>
                       <p>Pre nahranie dat sa prihlaste</p>
                       <Form
                         onReset={formikProps.handleReset}
@@ -106,41 +106,50 @@ const Data = () => {
                   }}
                 >
                   {(formikProps) => (
-                    <Form
-                      onReset={formikProps.handleReset}
-                      onSubmit={formikProps.handleSubmit}
-                    >
-                      <Form.Group controlId="data">
-                        <Form.Label>Nahrajte data</Form.Label>
-                        <Form.Control
-                          as="textarea"
-                          rows="10"
-                          name="data"
-                          type="text"
-                          placeholder="Data"
-                          onChange={formikProps.handleChange}
-                          onBlur={formikProps.handleBlur}
-                          value={formikProps.values.data}
-                        />
-                      </Form.Group>
+                    <>
+                      <h2>Covid negative test management dashboard</h2>
+                      <p className="mb-2 mt-2">
+                        Interface pre nahratie dát administrátorom. Môže sa
+                        úplne prispôsobiť potrebám a formátu dať
+                      </p>
+                      <Form
+                        onReset={formikProps.handleReset}
+                        onSubmit={formikProps.handleSubmit}
+                      >
+                        <Form.Group controlId="data">
+                          <Form.Label className="mb-2 mt-2">
+                            Nahrajte dáta
+                          </Form.Label>
+                          <Form.Control
+                            as="textarea"
+                            rows="15"
+                            name="data"
+                            type="text"
+                            placeholder="Data"
+                            onChange={formikProps.handleChange}
+                            onBlur={formikProps.handleBlur}
+                            value={formikProps.values.data}
+                          />
+                        </Form.Group>
 
-                      <Button variant="primary" type="submit">
-                        {isProcessing ? (
-                          <>
-                            <Spinner
-                              as="span"
-                              animation="border"
-                              size="sm"
-                              role="status"
-                              aria-hidden="true"
-                            />
-                            <span className="sr-only">Loading...</span>
-                          </>
-                        ) : (
-                          "Odoslat"
-                        )}
-                      </Button>
-                    </Form>
+                        <Button variant="primary" type="submit">
+                          {isProcessing ? (
+                            <>
+                              <Spinner
+                                as="span"
+                                animation="border"
+                                size="sm"
+                                role="status"
+                                aria-hidden="true"
+                              />
+                              <span className="sr-only">Loading...</span>
+                            </>
+                          ) : (
+                            "Odoslať"
+                          )}
+                        </Button>
+                      </Form>
+                    </>
                   )}
                 </Formik>
               )}
