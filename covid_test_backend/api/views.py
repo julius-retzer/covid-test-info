@@ -53,7 +53,7 @@ def add_results(request):
     #     }
     # ]
 
-    #data = json.loads(request.read())
+    # data = json.loads(request.read())
     # first hash is for 990225/6089
     data = json.loads('[{"date": "2020-03-18","hash": "$2a$10$zs8NOs0TXTk9nQjyOm0etOwC/TIVMpSOCOSPtiibJHZ4BVWLBlw52","result": 0}]')
 

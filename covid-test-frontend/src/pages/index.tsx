@@ -21,7 +21,7 @@ setDefaultLocale("sk");
 export interface Patient {
   birthNumber: string;
   testDate: Date;
-  gdpr: boolean;
+  // gdpr: boolean;
 }
 
 const Home = () => {
@@ -30,16 +30,15 @@ const Home = () => {
   return (
     <div className="container">
       <Head>
-        <title>Create Next App</title>
+        <title>Covid negative test management</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Container>
         <Row className="mb-3 mt-3">
           <Col md={{ span: 6, offset: 3 }}>
-            <h1>Covid test result app </h1>
-            <p>
-              Ak si chcete overit vysledky svojho testu, vyplnte formular a
-              budeme vas informovat
+            <h1>Overenie negatívneho výsledku testu na Covid-19</h1>
+            <p className="mt-3">
+              Pre overenie negatívneho výsledku vyplňte následovný formulár.
             </p>
           </Col>
         </Row>
@@ -49,8 +48,8 @@ const Home = () => {
               initialValues={{
                 birthNumber: "",
                 testDate: new Date(),
-                gdpr: false,
               }}
+              validate={validate}
               onSubmit={async (values: Patient) => {
                 const { test_result } = await checkResults(values);
                 setTestResult(test_result);
@@ -62,21 +61,30 @@ const Home = () => {
                   onSubmit={formikProps.handleSubmit}
                 >
                   <Form.Group controlId="birthNumber">
-                    <Form.Label>Rodne cislo</Form.Label>
+                    <Form.Label>Rodné číslo</Form.Label>
                     <Form.Control
                       name="birthNumber"
                       type="text"
-                      placeholder="Rodne cislo vo formate 1234567889"
+                      placeholder="Rodne cislo vo formate 1234567890"
                       onChange={formikProps.handleChange}
                       onBlur={formikProps.handleBlur}
                       value={formikProps.values.birthNumber}
+                      isInvalid={
+                        formikProps.touched.birthNumber &&
+                        !!formikProps.errors.birthNumber
+                      }
                     />
+
+                    <Form.Control.Feedback type="invalid">
+                      {formikProps.errors.birthNumber}
+                    </Form.Control.Feedback>
+
                     <Form.Text className="text-muted">
-                      We'll never share your email with anyone else.
+                      Vaše rodné číslo je bezpečne zašifrované
                     </Form.Text>
                   </Form.Group>
                   <Form.Group controlId="birthNumber">
-                    <Form.Label>Datum testovania</Form.Label>
+                    <Form.Label>Dátum testovania</Form.Label>
                     <DatePicker
                       wrapperClassName="d-block"
                       className="form-control"
@@ -88,14 +96,8 @@ const Home = () => {
                       placeholderText="Weeks start on Monday"
                     />
                   </Form.Group>
-                  <Form.Group controlId="formBasicCheckbox">
-                    <Form.Check
-                      type="checkbox"
-                      label="Suhlasim so spracovanim osobnych udajov"
-                    />
-                  </Form.Group>
                   <Button variant="primary" type="submit">
-                    Odoslat
+                    Odoslať
                   </Button>
                 </Form>
               )}
@@ -106,14 +108,35 @@ const Home = () => {
           <Col md={{ span: 6, offset: 3 }}>
             {testResult === "negative" && (
               <>
-                <Alert variant="success">Vas vysledok bol negativny</Alert>
-                <p>Dalsie instrukcie</p>
+                <Alert variant="success">
+                  Overili sme vašu vzorku a je{" "}
+                  <span className="font-weight-bold">negatívna</span>
+                </Alert>
+                <p>
+                  Naďalej prosím dodržiavajte platné nariadenia pre ochranu
+                  vášho zdravia a ostatných. Pre aktuálne odporúčania navštívte{" "}
+                  <a href="https://www.korona.gov.sk/#precautions">
+                    www.korona.gov.sk
+                  </a>
+                  .
+                </p>
               </>
             )}
             {testResult === "notfound" && (
               <>
-                <Alert variant="info">Vas vysledok nebol najdeny</Alert>
-                <p>Vase udaje neboli najdene medzi negativnymi záznamami</p>
+                <Alert variant="info">Vašu vzorku sme nedokázali overiť</Alert>
+                <p>To môže znamenať jednu z nasledujúcich možnosti</p>
+                <ul>
+                  <li>
+                    Vaša vzorka ešte nebola spracovaná. Nechajte nám na seba
+                    kontakt a budeme vás informovať, ak vzorka bude negatívna
+                  </li>
+                  <li>
+                    Vaša vzorka bola pozitívna. Čakajte prosím na telefonát z
+                    príslušného úradu, ktorý vás bude informovať o ďalšom
+                    postupe
+                  </li>
+                </ul>
               </>
             )}
           </Col>
@@ -130,14 +153,15 @@ const Home = () => {
 //     .replace(/\D/g, "")
 //     .replace(/^(\d{6})(\d{4})$/, withSlash ? "$1 / $2" : "$1$2");
 
-export const validate = (values: Patient) => {
+const validate = (values: Patient) => {
   const errors: Partial<FormikErrors<Patient>> = {};
 
   if (!values.birthNumber) {
     errors.birthNumber = "Zadajte rodné číslo";
-  } else if (!rodnecislo(values.birthNumber).isValid()) {
-    errors.birthNumber = "Zadajte platne rodné číslo (bez medzier)";
   }
+  // } else if (!rodnecislo(values.birthNumber).isValid()) {
+  //   errors.birthNumber = "Zadajte platne rodné číslo (bez medzier)";
+  // }
 
   return errors;
 };
