@@ -52,7 +52,6 @@ const Home = () => {
           }}
           validate={validate}
           onSubmit={async (values: Patient) => {
-            debugger;
             if (!values.email) {
               const { test_result } = await checkResults(values);
               return setTestResult(test_result);
