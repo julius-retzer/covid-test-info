@@ -2,8 +2,6 @@ import { Patient } from "./pages/index";
 import { format } from "date-fns";
 import bcrypt from "bcryptjs";
 
-const apiUrl = "https://gajdy.pythonanywhere.com/api/check";
-
 export type TestResult = "negative" | "notfound";
 interface CheckResult {
   test_result: TestResult;
@@ -18,7 +16,12 @@ export const checkResults = async (patient: Patient): Promise<CheckResult> => {
   formData.append("executed_at", date);
   formData.append("id_number", patient.birthNumber);
 
-  return (await fetch(apiUrl, { method: "POST", body: formData })).json();
+  return (
+    await fetch("https://gajdy.pythonanywhere.com/api/check", {
+      method: "POST",
+      body: formData,
+    })
+  ).json();
 };
 
 export const saveData = async (data: string) => {
@@ -44,4 +47,22 @@ export const saveData = async (data: string) => {
     method: "POST",
     body: JSON.stringify(hashedData),
   });
+};
+
+export const saveForNotification = async (
+  patient: Patient
+): Promise<CheckResult> => {
+  const formData = new FormData();
+  const date = formatDate(patient.testDate);
+
+  formData.append("executed_at", date);
+  formData.append("id_number", patient.birthNumber);
+  formData.append("email", patient.email);
+
+  return (
+    await fetch("https://gajdy.pythonanywhere.com/api/add_request", {
+      method: "POST",
+      body: formData,
+    })
+  ).json();
 };
