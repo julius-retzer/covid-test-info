@@ -68,14 +68,14 @@ def add_results(request):
     return HttpResponse(f'pridali sme {len(data)} výsledkov testov')
 
 def add_request(request):
-    # assert request.method == 'POST'
+    assert request.method == 'POST'
 
-    # email = request.POST.get('email')
-    # id_number = request.POST.get('id_number')
-    # executed_at = request.POST.get('executed_at')
-    email = 'lalala@posta.sk'
-    id_number = '098765/1234'
-    executed_at = '2020-01-01'
+    email = request.POST.get('email')
+    id_number = request.POST.get('id_number')
+    executed_at = request.POST.get('executed_at')
+    # email = 'lalala@posta.sk'
+    # id_number = '098765/1234'
+    # executed_at = '2020-01-01'
 
     new_request = ResultRequest(
         patient_id=id_number,
