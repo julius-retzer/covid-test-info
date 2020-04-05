@@ -109,12 +109,14 @@ const Home = () => {
             {testResult === "negative" && (
               <>
                 <Alert variant="success">
-                  Overili sme vašu vzorku a je negatívna
+                  Overili sme vašu vzorku a je{" "}
+                  <span className="font-weight-bold">negatívna</span>
                 </Alert>
                 <p>
-                  Naďalej prosím dodržiavajte{" "}
+                  Naďalej prosím dodržiavajte platné nariadenia pre ochranu
+                  vášho zdravia a ostatných. Pre aktuálne odporúčania navštívte{" "}
                   <a href="https://www.korona.gov.sk/#precautions">
-                    preventívne odporúčania
+                    www.korona.gov.sk
                   </a>
                   .
                 </p>
@@ -122,7 +124,7 @@ const Home = () => {
             )}
             {testResult === "notfound" && (
               <>
-                <Alert variant="info">Vašu vzorku sme nedokázali overiť </Alert>
+                <Alert variant="info">Vašu vzorku sme nedokázali overiť</Alert>
                 <p>To môže znamenať jednu z nasledujúcich možnosti</p>
                 <ul>
                   <li>
