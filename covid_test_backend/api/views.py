@@ -6,7 +6,7 @@ import json
 import bcrypt as bcrypt
 from django.http import JsonResponse, HttpResponse
 
-from .models import TestResult
+from .models import TestResult, ResultRequest
 
 
 def check(request):
@@ -65,8 +65,27 @@ def add_results(request):
         )
         new_test_result.save()
 
-    response = HttpResponse(f'pridali sme {len(data)} výsledkov testov')
+    return HttpResponse(f'pridali sme {len(data)} výsledkov testov')
 
+def add_request(request):
+    assert request.method == 'POST'
+
+    email = request.POST.get('email')
+    id_number = request.POST.get('id_number')
+    executed_at = request.POST.get('executed_at')
+    # email = 'lalala@posta.sk'
+    # id_number = '098765/1234'
+    # executed_at = '2020-01-01'
+
+    new_request = ResultRequest(
+        patient_id=id_number,
+        executed_at=executed_at,
+        email=email
+    )
+
+    new_request.save()
+
+    response = JsonResponse({'message': 'ok'})
     response['Access-Control-Allow-Origin'] = '*'
 
     return response
