@@ -38,7 +38,7 @@ const Home = () => {
           <Col md={{ span: 6, offset: 3 }}>
             <h1>Overenie negatívneho výsledku testu na Covid-19</h1>
             <p className="mt-3">
-              Pre overenie negatívneho výsledku vyplňte následovný formulár. 
+              Pre overenie negatívneho výsledku vyplňte následovný formulár.
             </p>
           </Col>
         </Row>
@@ -112,9 +112,11 @@ const Home = () => {
                   Overili sme vašu vzorku a je negatívna
                 </Alert>
                 <p>
-                  Naďalej prosím dodržiavajte správne hygienické zásady
-                  (umývanie rúk, nedotýkať sa tváre, nestretávať sa s ľuďmi,
-                  pokiaľ to nie je nevyhnutné)
+                  Naďalej prosím dodržiavajte{" "}
+                  <a href="https://www.korona.gov.sk/#precautions">
+                    preventívne odporúčania
+                  </a>
+                  .
                 </p>
               </>
             )}
