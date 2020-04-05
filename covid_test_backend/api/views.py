@@ -85,4 +85,7 @@ def add_request(request):
 
     new_request.save()
 
-    return JsonResponse({'message': 'ok'})
+    response = JsonResponse({'message': 'ok'})
+    response['Access-Control-Allow-Origin'] = '*'
+
+    return response
